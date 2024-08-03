@@ -1,0 +1,44 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dockerImageName: 'your-docker-image'  # Update with your image name
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndPush
+    steps:
+    - task: Docker@2
+      inputs:
+        command: 'buildAndPush'
+        repository: $(dockerImageName)
+        dockerfile: '**/Dockerfile'
+        containerRegistry: 'yourACRServiceConnection'
+        tags: |
+          latest
+
+- stage: Deploy
+  jobs:
+  - job: DeployToKubernetes
+    strategy:
+      matrix:
+        dev:
+          namespace: "dev"
+          k8s_folder: "k8s/Dev"
+        uat:
+          namespace: "uat"
+          k8s_folder: "k8s/Uat"
+        prod:
+          namespace: "prod"
+          k8s_folder: "k8s/Prod"
+    steps:
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: 'yourKubeServiceConnection'  # Kubernetes service connection
+        command: 'apply'
+        arguments: '-f $(k8s_folder)/deployment.yaml -f $(k8s_folder)/service.yaml'
