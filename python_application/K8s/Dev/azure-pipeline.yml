@@ -40,3 +40,11 @@ jobs:
       namespace: '$(kubernetesNamespace)'
       command: 'apply'
       arguments: '-f k8s/service.yaml'
+
+  - task: Kubernetes@1
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceConnection: '$(kubernetesServiceConnection)'
+      namespace: '$(kubernetesNamespace)'
+      command: 'apply'
+      arguments: '-f k8s/ingress.yaml'
