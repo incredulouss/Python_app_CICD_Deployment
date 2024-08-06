@@ -1,5 +1,5 @@
 trigger:
-- dev_infra  # Adjust to your branch name
+- prod_infra  # Adjust to your branch name
 
 pool:
   vmImage: 'ubuntu-latest'

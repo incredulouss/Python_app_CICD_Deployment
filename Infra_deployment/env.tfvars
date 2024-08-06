@@ -22,3 +22,25 @@ Enviroenmnet_tag = "Dev"
 
 ## Vnet ####
 vnet_name = "Test"
+vnet_address_space =  ["10.0.0.0/16"]
+subnet_name = "myAKSSubnet"
+aks_subnet_prefix = "10.0.1.0/24"
+##### ACR #############3
+
+location = "West Europe"
+acr_name = "myacr"
+
+resource_group_name = "Rg_dev"
+
+
+## Storagr account ###
+storage_account_name = "mystorage"
+
+
+
+### KeyVault #####
+key_vault_name = "mykeyvault"
+
+object_id = "mykeyvaultobjectid"
+
+
