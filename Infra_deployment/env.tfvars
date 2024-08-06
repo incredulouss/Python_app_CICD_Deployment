@@ -3,12 +3,12 @@ client_id       = "XXXX.XXXX.XXXX.XXXX"
 client_secret   = "XXXX.XXXX.XXXX.XXXX"
 tenant_id       = "d043ce72-ba03-4c71-9752-8182ccd05df9"
 
-devRGName       = "Rg_dev"
-devRGlocation   = "West Europe"
-dev-aks-cluster = "aksdev"
-acr-name        = "devreg"
+prodRGName       = "Rg_prod"
+prodRGlocation   = "West Europe"
+prod-aks-cluster = "aksprod"
+acr-name        = "prodreg"
 //Agent Pool configuration 
-agnet_pool_name = "agentpool_dev_westeurope"
+agnet_pool_name = "agentpool_prod_westeurope"
 pool_count      = 1
 vm_size         = "Standard_B1s"
 os_sku          = "Ubuntu"
@@ -18,7 +18,7 @@ type = "VirtualMachineScaleSets"
 max_pods        = 30
 os_disk_size_gb = 30
 
-Enviroenmnet_tag = "Dev"
+Enviroenmnet_tag = "prod"
 
 ## Vnet ####
 vnet_name = "Test"
@@ -30,7 +30,7 @@ aks_subnet_prefix = "10.0.1.0/24"
 location = "West Europe"
 acr_name = "myacr"
 
-resource_group_name = "Rg_dev"
+resource_group_name = "Rg_prod"
 
 
 ## Storagr account ###
