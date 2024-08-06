@@ -4,9 +4,24 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies
+RUN pip install --no-cache-dir -r requirement.txt
+
+# Run Pylama for linting
+RUN pylama > pylama_report.txt
+
+# Run pytest for testing
+RUN pytest > pytest_report.txt
+
+# Check if there are any linting or testing errors
+RUN if grep -q "E" pylama_report.txt; then echo "Linting errors found."; exit 1; fi
+RUN if grep -q "FAILURES" pytest_report.txt; then echo "Test failures found."; exit 1; fi
+
+# Expose port
 EXPOSE 8002
 
+# Set environment variable for Uvicorn command
 ENV UVICORN_CMD="uvicorn main:app --host 0.0.0.0 --port 8002 --reload"
 
+# Command to run the application
 CMD ["sh", "-c", "$UVICORN_CMD"]
