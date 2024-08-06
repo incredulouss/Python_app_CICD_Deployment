@@ -18,7 +18,7 @@ type = "VirtualMachineScaleSets"
 max_pods        = 30
 os_disk_size_gb = 30
 
-Enviroenmnet_tag = "Dev"
+Enviroenmnet_tag = "uat"
 
 ## Vnet ####
 vnet_name = "Test"
