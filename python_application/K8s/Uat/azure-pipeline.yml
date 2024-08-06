@@ -1,0 +1,42 @@
+trigger:
+- deployment_uat
+
+variables:
+  azureSubscription: 'your-azure-subscription'  # Azure service connection name
+  containerRegistry: 'your-container-registry'   # Your Azure Container Registry name
+  imageName: 'uat-deployment'
+  imageTag: '$(Build.BuildId)'
+  kubernetesCluster: 'uat-aks'  # Name of your Kubernetes cluster
+  kubernetesNamespace: 'uat'                  # Namespace for your deployment
+  kubernetesServiceConnection: 'uat-sc' # Service connection for Kubernetes
+
+jobs:
+- job: BuildAndPush
+  steps:
+  - task: Docker@2
+    inputs:
+      command: 'buildAndPush'
+      containerRegistry: '$(containerRegistry)'
+      repository: '$(imageName)'
+      tags: '$(imageTag)'
+      Dockerfile: '**/Dockerfile'
+      buildContext: '$(Build.SourcesDirectory)'
+      addPipelineData: false
+
+- job: DeployToK8s
+  dependsOn: BuildAndPush
+  steps:
+  - task: Kubernetes@1
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceConnection: '$(kubernetesServiceConnection)'
+      namespace: '$(kubernetesNamespace)'
+      command: 'apply'
+      arguments: '-f k8s/deployment.yaml'
+  - task: Kubernetes@1
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceConnection: '$(kubernetesServiceConnection)'
+      namespace: '$(kubernetesNamespace)'
+      command: 'apply'
+      arguments: '-f k8s/service.yaml'
